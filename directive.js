@@ -135,6 +135,8 @@ angular.module("tide-angular")
         var render = function(data) {
           if (data && data.length) {
 
+            xAttribute = scope.xAttribute ? scope.xAttribute : '2013 [YR2013]';
+
             var barHeight = 10;
             var verticalPadding = 1;
 
@@ -172,16 +174,22 @@ angular.module("tide-angular")
 
 
             // Render Bars
-            var bars = svgContainer.selectAll("d.bar")
-            .data(data);
+            var bars = svgContainer.selectAll("g.bar")
+            .data(data, function(d) {return d[idAttribute]});
 
             var newBars = bars.enter()
             .append("g")
+              .attr("class", "bar")
               .attr("transform", function(d,i) {
                 return "translate("+0+","+yScale(d[yAttribute])+")";
               })
 
             newBars.append("rect")
+              .on('mouseover', toolTip.show)
+              .on('mouseout', toolTip.hide)     
+
+            bars.select("rect")
+              .transition()
               .attr("width",  function(d,i) {
                 return xScale(d[xAttribute]);
               })
@@ -189,8 +197,8 @@ angular.module("tide-angular")
               .attr("fill",function(d) {
                 return colorScale(d[colorAttribute])
               })
-              .on('mouseover', toolTip.show)
-              .on('mouseout', toolTip.hide)              
+ 
+
           }
         }
 
@@ -199,6 +207,11 @@ angular.module("tide-angular")
 
         // Check for changes in data and re-render
         scope.$watch("data", function () {
+          render(scope.data);
+        });      
+  
+        // Check for changes in data and re-render
+        scope.$watch("xAttribute", function () {
           render(scope.data);
         });      
   

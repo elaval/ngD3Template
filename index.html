@@ -46,7 +46,6 @@
     </div>
     <div class="collapse navbar-collapse" id="humandev-navbar">
 
-
     </div>
 
     </div>
@@ -56,9 +55,18 @@
   <!-- container -->
   <div class="container" >
 
+    <div class="row">
+
+      <select name="" id="input" class="form-control" ng-model="controller.selectedYear" required="required" ng-options="value for value in controller.years">
+      </select>
+    
+      <select name="" id="input" class="form-control" ng-change="controller.changeCategorie(controller.selectedCategorie)" ng-model="controller.selectedCategorie" required="required" ng-options="value for value in controller.categories">
+      </select>
+    
+    </div>
 
     <div class="row">
-      <div td-sample-viewer td-data="controller.data"></div>
+      <div td-sample-viewer td-data="controller.data" td-x-attribute="controller.selectedYear"></div>
     </div>
 
 

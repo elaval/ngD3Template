@@ -66,6 +66,26 @@ angular.module('tideApp')
     return deferred.promise;
   }
 
+  // Gets posible values for 'Series Code' attribute
+  this.categories = function() {
+    // deferred - use of promises to deal with async results
+    var deferred = $q.defer();
+
+    myself.getData()
+    .then(function(data) {
+      // Filter data according to filter options (Ex {'Series Code':'SE.PRM.ENRR.FE'})
+      var groups = _.groupBy(data, function(d) {
+        return d['Series Code'];
+      })
+
+      deferred.resolve(_.keys(groups));
+    })
+    .catch(function(err) {
+      deferred.reject(err)
+    })
+ 
+    return deferred.promise;
+  }
 
 
 }])
